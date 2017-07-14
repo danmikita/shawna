@@ -1,0 +1,656 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Encounter
+  description: The Encounters service
+host: api.spectrumhealth.org
+basePath: /appointment
+schemes:
+  - http
+  - https
+produces:
+  - application/json
+  - text/plain
+paths:
+  /getEncountersByCpi:
+    get:
+      summary: Patient Encounters
+      description: |
+        The Encounters endpoint returns all encounters for a given patient.
+        The response includes all past and future encounters from the
+        inpatient, outpatient, and emergency settings.
+      parameters:
+        - name: cpi
+          in: query
+          description: Patient identification number.
+          required: true
+          type: number
+          format: string
+        - name: start
+          in: query
+          description: The date (in seconds since epoch) from which you want to start looking for encounters.
+          required: true
+          type: string
+        - name: end
+          in: query
+          description: The date (in seconds since epoch) from which you want to stop looking for encounters.
+          required: true
+          type: string
+      responses:
+        200:
+          description: An array of encounters
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Encounters'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /getEncounterById:
+    get:
+      summary: Patient Encounters
+      description: |
+        The Encounters endpoint returns all encounters for a given patient.
+        The response includes all past and future encounters from the
+        inpatient, outpatient, and emergency settings.
+      parameters:
+        - name: identifier
+          in: body
+          description: Encounter identifier.
+          required: true
+          schema:
+            $ref: '#/definitions/Identifier'
+      responses:
+        200:
+          description: An appointment
+          schema:
+              $ref: '#/definitions/Encounter'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /getEncountersByDepartmentId:
+    get:
+      summary: Patient Appointments
+      description: |
+        The Encounters endpoint returns all encounters for a given department.
+        The response includes all past and future encounters from the
+        inpatient, outpatient, and emergency settings.
+      parameters:
+        - name: departmentId
+          in: query
+          description: Department identification number.
+          required: true
+          type: number
+          format: string
+        - name: start
+          in: query
+          description: The date (in seconds since epoch) from which you want to start looking for appointments.
+          required: true
+          type: string
+        - name: end
+          in: query
+          description: The date (in seconds since epoch) from which you want to stop looking for appointments.
+          required: true
+          type: string
+  /getAppointmentsByCpi:
+    get:
+      summary: Patient Appointments
+      description: |
+        The Appointment endpoint returns all encounters for a given patient.
+        The response includes all past and future encounters from the
+        inpatient, outpatient, and emergency settings.
+      parameters:
+        - name: cpi
+          in: query
+          description: Patient identification number.
+          required: true
+          type: number
+          format: string
+        - name: start
+          in: query
+          description: The date (in seconds since epoch) from which you want to start looking for appointments.
+          required: true
+          type: string
+        - name: end
+          in: query
+          description: The date (in seconds since epoch) from which you want to stop looking for appointments.
+          required: true
+          type: string
+  /getAppointmentsByCpis:
+    get:
+      summary: Patient Appointments
+      description: |
+        The Appointment endpoint returns all encounters for the given patient(s).
+        The response includes all past and future encounters from the
+        inpatient, outpatient, and emergency settings.
+      parameters:
+        - name: cpis
+          in: query
+          description: Patient identification number(s).
+          required: true
+          type: array
+          items:
+            type: number
+            format: string
+        - name: start
+          in: query
+          description: The date (in seconds since epoch) from which you want to start looking for appointments.
+          required: true
+          type: string
+        - name: end
+          in: query
+          description: The date (in seconds since epoch) from which you want to stop looking for appointments.
+          required: true
+          type: string
+      responses:
+        200:
+          description: An array of appointments
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Appointments'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /getAppointmentById:
+    get:
+      summary: Patient Appointment
+      description: |
+        The Appointment endpoint returns all encounters for a given patient.
+        The response includes all past and future encounters from the
+        inpatient, outpatient, and emergency settings.
+      parameters:
+        - name: identifier
+          in: body
+          description: Appointment identifier.
+          required: true
+          schema:
+            $ref: '#/definitions/Identifier'
+      responses:
+        200:
+          description: An appointment
+          schema:
+              $ref: '#/definitions/Appointment'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /getAppointmentsByDepartmentId:
+    get:
+      summary: Patient Appointments
+      description: |
+        The Appointment endpoint returns all encounters for a given department.
+        The response includes all past and future encounters from the
+        inpatient, outpatient, and emergency settings.
+      parameters:
+        - name: departmentId
+          in: query
+          description: Department identification number.
+          required: true
+          type: number
+          format: string
+        - name: start
+          in: query
+          description: The date (in seconds since epoch) from which you want to start looking for appointments.
+          required: true
+          type: string
+        - name: end
+          in: query
+          description: The date (in seconds since epoch) from which you want to stop looking for appointments.
+          required: true
+          type: string
+definitions:
+  Encounters:
+    type: object
+    properties:
+      encounter:
+        type: array
+        items:
+          $ref: '#/definitions/Encounter'
+  Encounter:
+    type: object
+    properties:
+      identifier:
+        $ref: '#/definitions/Identifier'
+      encounterStatus:
+        $ref: "#/definitions/EncounterStatus"
+      classValue:
+        $ref: "#/definitions/Class"
+      type:
+        description: Specific type of appointment
+        type: string
+      patient:
+        $ref: '#/definitions/Identifier'
+      providers:
+        type: object
+        properties:
+          provider:
+            type: array
+            items:
+              $ref: "#/definitions/Provider"
+      appointment:
+        $ref: "#/definitions/Identifier"
+      period:
+        $ref: "#/definitions/Period"
+      reason:
+        description: Reason the appointment takes place
+        type: string
+      location:
+        $ref: "#/definitions/Location"
+      extensions:
+        $ref: "#/definitions/EncounterExtensions"
+  EncounterStatus:
+    description: The calculated status of the appointment
+    type: string
+    enum:
+      - PLANNED
+      - ARRIVED
+      - CANCELED
+      - FINISHED
+      - OTHER
+  Class:
+    description: Encounter class values derived from FHIR specification https://www.hl7.org/fhir/valueset-appointment-class.html
+    type: string
+    enum:
+      - INPATIENT
+      - OUTPATIENT
+      - AMBULATORY
+      - EMERGENCY
+      - HOME
+      - FIELD
+      - DAYTIME
+      - VIRTUAL
+      - OTHER
+  Appointments:
+    type: object
+    properties:
+      appointment:
+        type: array
+        items:
+          $ref: '#/definitions/Appointment'
+  Appointment:
+    type: object
+    properties:
+      identifier:
+        $ref: '#/definitions/Identifier'
+      appointmentStatus:
+        $ref: "#/definitions/AppointmentStatus"
+      type:
+        description: The type of the appointment
+        type: string
+      patient:
+        $ref: '#/definitions/Identifier'
+      description:
+        description: Shown on a subject line in a meeting request, or appointment list
+        type: string
+      start:
+        type: string
+        description: When appointment is to take place
+      end:
+        type: string
+        description: When appointment is to conclude
+      minutesDuration:
+        type: integer
+        description: Can be less than start/end (e.g. estimate)
+      providers:
+        type: object
+        properties:
+          provider:
+            type: array
+            items:
+              $ref: "#/definitions/Provider"
+      location:
+        $ref: "#/definitions/Location"
+      extensions:
+        $ref: "#/definitions/AppointmentExtensions"
+  AppointmentStatus:
+    description: The calculated status of the appointment
+    type: string
+    enum:
+      - SCHEDULED
+      - COMPLETED
+      - CANCELED
+      - NO_SHOW
+      - LEFT_WITHOUT_SEEN
+      - CHECKED_IN
+      - CHECKED_OUT
+      - RESCHEDULED
+      - CONFIRMED
+      - PENDING
+      - OTHER
+  Period:
+    description: The start and end time of the event. https://www.hl7.org/fhir/datatypes.html#Period
+    type: object
+    properties:
+      start:
+        type: string
+        description: Starting time with inclusive boundary.
+      end:
+        type: string
+        description: End time with inclusive boundary, if not ongoing
+  Location:
+    type: object
+    properties:
+      identifier:
+        $ref: '#/definitions/Identifier'
+      address:
+        $ref: '#/definitions/Address'
+      name:
+        type: string
+      room:
+        type: string
+      bed:
+        type: string
+      bedPhoneNumber:
+        type: string
+  Address:
+    type: object
+    properties:
+      addressLine1:
+        type: string
+      addressLine2:
+        type: string
+      addressType:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      county:
+        type: string
+      state:
+        type: string
+      zipCode:
+        type: string
+  Provider:
+    type: object
+    properties:
+      name:
+        type: string
+      type:
+        $ref: '#/definitions/ProviderType'
+      role:
+        type: string
+      identifiers:
+        type: object
+        properties:
+          identifier:
+            type: array
+            items:
+              $ref: '#/definitions/Identifier'
+      isDisplayProvider:
+        type: boolean
+  ProviderType:
+      type: string
+      description: The available Provider type
+      enum:
+        - SCHEDULING
+        - REFERRING
+        - TREATMENT_TEAM
+        - CARE_TEAM
+        - ATTENDING
+        - ADMITTING
+        - SURGEON
+        - PRIMARY_CARE_PROVIDER
+        - OTHER
+  Identifier:
+    type: object
+    description: Associated Ids for this item
+    properties:
+      type:
+        type: string
+      system:
+        type: string
+      value:
+        type: string
+  EncounterExtensions:
+    type: object
+    properties:
+      toggles:
+        $ref: '#/definitions/EncounterToggles'
+      guarantor:
+        $ref: '#/definitions/Guarantor'
+      insuranceCoverage:
+        $ref: '#/definitions/InsuranceCoverage'
+      patientDisplayName:
+        type: string
+      clinicalDocumentHandles:
+        type: object
+        properties:
+          clinicalDocumentHandle:
+            type: array
+            items:
+              $ref: '#/definitions/ClinicalDocumentHandle'
+  AppointmentExtensions:
+    type: object
+    properties:
+      toggles:
+        $ref: '#/definitions/AppointmentToggles'
+      cancelContactId:
+        type: string
+      eCheckinStatus:
+        $ref: '#/definitions/eCheckinStatus'
+      confirmedStatus:
+        $ref: '#/definitions/ConfirmedStatus'
+      appointmentNotes:
+        type: string
+        description: Notes meant specifically for clinical staff. This should be used with caution - this data is usally not suitable for patients.
+      patientInstructions:
+        $ref: '#/definitions/PatientInstructions'
+      patientArrivalTimeOffset:
+        type: string
+      patientDisplayName:
+        type: string
+      waitLists:
+        type: array
+        items:
+          $ref: '#/definitions/Waitlist'
+      questionnaires:
+        type: array
+        items:
+          $ref: '#/definitions/Questionnaire'
+  PatientInstructions:
+      description: Instructions meant specifically for the patient.
+      type: object
+      properties:
+        preArrivalInstructions:
+          type: string
+        preBookingInstructions:
+            type: string
+  eCheckinStatus:
+    type: string
+    enum:
+      - NOT_OFFERED
+      - NOT_YET_AVAILABLE
+      - NOT_STARTED
+      - IN_PROGRESS
+      - COMPLETED
+      - NOT_NEEDED
+      - FILTERED
+      - OTHER
+  ConfirmedStatus:
+    type: string
+    enum:
+      - CONFIRMED
+      - NOT_CONFIRMED
+      - REMOVED
+      - OTHER
+  EncounterToggles:
+    description: Toggles are enterprise decisions which represent triggers to act upon within consumers.
+    type: object
+    properties:
+      isTimeViewable:
+        type: boolean
+        description: This toggle indicates when a patient facing application should make the time of an appointment viewable to the patient (eg. A surgical appointment scheduled at 3:00pm but the patient should actually arrive at 1:00pm for surgical-prep).
+      isPatientViewable:
+          type: boolean
+          description: Whether this appointment can be shown to the patient at all.
+      isLocationViewable:
+          type: boolean
+          description: Whether or not the location should be shown for this event. This mainly pertains to video visits.
+  AppointmentToggles:
+    description: Toggles are enterprise decisions which represent triggers to act upon within consumers.
+    type: object
+    properties:
+      isTimeViewable:
+        type: boolean
+        description: Whether or not the time should be shown to the patient
+      isVideoVisit:
+        type: boolean
+        description: Whether or not this appointment is an e-visit
+      isECheckinViewable:
+        type: boolean
+        description: Whether or not this appointment can be e-checked in, and whether it should be shown to the patient
+      isConfirmable:
+        type: boolean
+      isPatientViewable:
+        type: boolean
+        description: Whether this appointment can be shown to the patient at all
+      isWaitListed:
+        type: boolean
+        description: Whether or not this appointment has been wait-listed
+      isCancelable:
+        type: boolean
+        description: Whether or not this appointment can be canceled
+      isLocationViewable:
+        type: boolean
+        description: Whether or not the location should be shown for this event. This mainly pertains to video visits.
+  Guarantor:
+    type: object
+    properties:
+      identifier:
+        $ref: '#/definitions/Identifier'
+      name:
+        type: string
+      type:
+        type: string
+      relationshipToPatient:
+        type: string
+  InsuranceCoverage:
+    type: object
+    properties:
+      identifier:
+        $ref: '#/definitions/Identifier'
+      plan:
+        type: string
+      payor:
+        type: string
+      contractNumber:
+        type: string
+      groupNumber:
+        type: string
+      subscriber:
+        $ref: '#/definitions/Subscriber'
+  Subscriber:
+    type: object
+    properties:
+      name:
+        type: string
+      relationshipToPatient:
+        type: string
+  Waitlist:
+    type: object
+    properties:
+      waitListStatus:
+        $ref: '#/definitions/WaitListStatus'
+      isAvailable:
+        type: boolean
+      offerDateTime:
+        type: string
+      offerResolvedDateTime:
+        type: string
+      offerSentDateTime:
+        type: string
+      offerViewedDateTime:
+        type: string
+  WaitListStatus:
+    type: string
+    enum:
+      - ACTIVE
+      - ACCEPTED
+      - DECLINED
+      - EXPIRED
+      - UNAVAILABLE
+      - DELETED
+      - OTHER
+  Questionnaire:
+    type: object
+    properties:
+      context:
+        $ref: '#/definitions/QuestionnaireContext'
+      name:
+        type: string
+        description: Name of questionnaire from Epic
+      questionnaireStatus:
+        $ref: '#/definitions/QuestionnaireStatus'
+      type:
+        $ref: '#/definitions/Type'
+      identifiers:
+            type: array
+            items:
+              $ref: '#/definitions/Identifier'
+  QuestionnaireStatus:
+    type: string
+    description: The possible statuses, as documented by Epic - https://datahandbook.epic.com/WebServices/Details/3059381
+    enum:
+      - NEW
+      - IN_PROGRESS
+      - REVIEWABLE
+      - COMPLETED
+      - OTHER
+  Type:
+    type: string
+    description: The possible types, as documented by Epic - https://datahandbook.epic.com/WebServices/Details/3059381
+    enum:
+      - GENERAL
+      - HISTORY
+      - OTHER
+  QuestionnaireContext:
+    type: object
+    description: Questionnaire context that will enable deep linking into the datatile
+    properties:
+      name:
+        type: string
+      token:
+        type: string
+  ClinicalDocumentHandle:
+    type: object
+    description: Clinical Document Handle will allow user to call the clinical-DocumentService to get documents corresponding to the encounter.
+    properties:
+      cpi:
+        type: string
+      documentId:
+        type: string
+      documentType:
+        $ref: '#/definitions/ClinicalDocumentType'
+      sourceSystem:
+        type: string
+  ClinicalDocumentType:
+    type: string
+    description: The possible types found in the clinical-DocumentService - https://jira.internal.priority-health.com/stash/projects/EWS/repos/clinical-document/browse/clinical-documentservice/src/main/java/org/spectrumhealth/ws/enterprise/clinicaldocument/model/DocumentType.java
+    enum:
+      - AFTER_VISIT_SUMMARY
+      - INPATIENT_AVS_GENERAL
+      - INPATIENT_AVS_OB_DELIVERED
+      - INPATIENT_AVS_OB_UNDELIVERED
+      - INPATIENT_DAY_AT_A_GLANCE
+      - SURGICAL_AVS
+      - EMERGENCY_AVS
+      - PATIENT_DEPART_SUMMARY
+      - CONTINUITY_OF_CARE
+      - PATIENT_HEALTH_SUMMARY
+      - TRANSITION_OF_CARE
+      - AMBULATORY_SUMMARY
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
