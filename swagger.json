@@ -456,6 +456,7 @@
                     "type": "string"
                 },
                 "end": {
+                    "format": "date-time",
                     "description": "When appointment is to conclude",
                     "type": "string"
                 },
