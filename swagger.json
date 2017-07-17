@@ -305,6 +305,33 @@
                     }
                 ]
             }
+        },
+        "/appointment": {
+            "get": {
+                "summary": "Get appointments by an id",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body"
+                    },
+                    {
+                        "name": "cpi",
+                        "in": "query",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "#/definitions/Appointment"
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
