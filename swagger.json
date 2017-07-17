@@ -253,6 +253,27 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "summary": "alskdjf",
+                "description": "sadfasdfas'\n",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "sdfasdfasdf",
+                        "schema": {
+                            "$ref": "#/definitions/Identifier"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/Appointment"
+                        }
+                    }
+                }
             }
         },
         "/getAppointmentsByDepartmentId": {
