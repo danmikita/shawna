@@ -332,6 +332,28 @@
                     }
                 }
             }
+        },
+        "/visit": {
+            "get": {
+                "description": "Gets a list of visits\n",
+                "parameters": [
+                    {
+                        "name": "visitId",
+                        "in": "query",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "#/definitions/Encounter"
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
