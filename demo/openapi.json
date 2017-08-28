@@ -1,1 +1,51 @@
-{"swagger":"2.0","info":{"title":"Demo","description":"Innovation Days demo","version":"1.0.0"}}
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Demo",
+    "description": "Innovation Days demo",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/user": {
+      "get": {
+        "summary": "user",
+        "description": "Get a user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "User id",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Good user response",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "properties": {
+        "name": {
+          "description": "This is the name of the user.",
+          "type": "string"
+        },
+        "id": {
+          "description": "User id",
+          "type": "integer"
+        }
+      }
+    }
+  }
+}
